@@ -7,8 +7,8 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @Entity
-@Table(name = "banks")
-public class Bank {
+@Table(name = "clients")
+public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,15 @@ public class Bank {
     @NotBlank
     private String name;
 
-    @Column(name = "bik")
+    @Column(name = "short_name")
     @NotBlank
-    private Long bikNumber;
+    private String shortName;
+
+    @NotBlank
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "rules_form")
+    @NotBlank
+    private String rulesForm;
 }
