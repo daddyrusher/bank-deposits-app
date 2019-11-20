@@ -1,52 +1,39 @@
 package com.daddyrusher.bankdepositsapp.service;
 
 import com.daddyrusher.bankdepositsapp.domain.Deposit;
-import com.daddyrusher.bankdepositsapp.repository.DepositRepository;
+import com.daddyrusher.bankdepositsapp.repository.BaseCrudRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class DepositService implements DepositRepository {
-    @PersistenceContext
-    private EntityManager manager;
+public class DepositService {
+    private final BaseCrudRepository<Deposit> repository;
 
-    @Override
-    @Transactional
-    public Deposit insert(Deposit deposit) {
-        if (deposit.getId() == null) {
-            manager.persist(deposit);
-        }
-        return deposit;
+    public DepositService(@Qualifier("depositRepository") BaseCrudRepository<Deposit> repository) {
+        this.repository = repository;
     }
 
-    @Override
-    public Deposit getById(Long id) {
-        return manager.find(Deposit.class, id);
+    public List<Deposit> findAll() {
+        return repository.findAll();
     }
 
-    @Override
-    @Transactional
+    public Deposit save(Deposit deposit) {
+        return repository.save(deposit);
+    }
+
+    public Optional<Deposit> findById(Long id) {
+        return repository.findById(id);
+    }
+
     public Deposit update(Deposit deposit) {
-        return null;
+        return repository.update(deposit);
     }
 
-    @Override
-    @Transactional
-    public Deposit delete(Deposit deposit) {
-        if (manager.contains(deposit)) {
-            manager.remove(deposit);
-        } else {
-            manager.merge(deposit);
-        }
-        return null;
+    public void delete(Deposit deposit) {
+        repository.delete(deposit);
     }
 
-    @Override
-    public List<Deposit> getAll() {
-        return null;
-    }
 }

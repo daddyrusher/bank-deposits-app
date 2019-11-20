@@ -15,11 +15,13 @@ public class Deposit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "client")
+    @ManyToOne
+    @JoinColumn(name = "client_id")
     @NotBlank
     private Client client;
 
-    @Column(name = "bank")
+    @ManyToOne
+    @JoinColumn(name = "bank_id")
     @NotBlank
     private Bank bank;
 
@@ -31,7 +33,7 @@ public class Deposit {
     @NotBlank
     private Double percent;
 
-    @Column(name = "months")
+    @Column(name = "period")
     @NotBlank
-    private Integer months;
+    private Integer period;
 }

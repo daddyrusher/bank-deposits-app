@@ -1,52 +1,38 @@
 package com.daddyrusher.bankdepositsapp.service;
 
 import com.daddyrusher.bankdepositsapp.domain.Bank;
-import com.daddyrusher.bankdepositsapp.repository.BankRepository;
+import com.daddyrusher.bankdepositsapp.repository.BaseCrudRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class BankService implements BankRepository {
+public class BankService {
+    private final BaseCrudRepository<Bank> repository;
 
-    @PersistenceContext
-    private EntityManager manager;
-
-    @Override
-    @Transactional
-    public Bank insert(Bank bank) {
-        if (bank.getId() == null) {
-            manager.persist(bank);
-        }
-        return bank;
+    public BankService(@Qualifier("bankRepository") BaseCrudRepository<Bank> repository) {
+        this.repository = repository;
     }
 
-    @Override
-    public Bank getById(Long id) {
-        return manager.find(Bank.class, id);
+    public List<Bank> findAll() {
+        return repository.findAll();
     }
 
-    @Override
-    @Transactional
-    public Bank update(Bank entity) {
-        return null;
+    public Bank save(Bank bank) {
+        return repository.save(bank);
     }
 
-    @Override
-    public Bank delete(Bank bank) {
-        if (manager.contains(bank)) {
-            manager.remove(bank);
-        } else {
-            manager.merge(bank);
-        }
-        return null;
+    public Optional<Bank> findById(Long id) {
+        return repository.findById(id);
     }
 
-    @Override
-    public List<Bank> getAll() {
-        return null;
+    public Bank update(Bank bank) {
+        return repository.update(bank);
+    }
+
+    public void delete(Bank bank) {
+        repository.delete(bank);
     }
 }

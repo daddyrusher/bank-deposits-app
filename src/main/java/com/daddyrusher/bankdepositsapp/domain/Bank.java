@@ -18,7 +18,7 @@ public class Bank {
     @NotBlank
     private String name;
 
-    @Column(name = "bik")
+    @Column(name = "bik_number")
     @NotBlank
     private Long bikNumber;
 }

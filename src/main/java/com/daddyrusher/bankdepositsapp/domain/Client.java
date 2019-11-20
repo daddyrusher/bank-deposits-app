@@ -9,24 +9,23 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "clients")
 public class Client {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column
     @NotBlank
     private String name;
 
-    @Column(name = "short_name")
+    @Column
     @NotBlank
     private String shortName;
 
     @NotBlank
-    @Column(name = "address")
+    @Column
     private String address;
 
-    @Column(name = "rules_form")
+    @Column
     @NotBlank
     private String rulesForm;
 }

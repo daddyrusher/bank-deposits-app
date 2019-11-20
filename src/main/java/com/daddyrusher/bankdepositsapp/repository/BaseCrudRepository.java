@@ -1,11 +1,12 @@
 package com.daddyrusher.bankdepositsapp.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BaseCrudRepository<T> {
-    T insert(T entity);
-    T getById(Long id);
+    T save(T entity);
+    Optional<T> findById(Long id);
+    void delete(T entity);
     T update(T entity);
-    T delete(T entity);
-    List<T> getAll();
+    List<T> findAll();
 }

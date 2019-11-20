@@ -1,51 +1,44 @@
 package com.daddyrusher.bankdepositsapp.service;
 
 import com.daddyrusher.bankdepositsapp.domain.Client;
-import com.daddyrusher.bankdepositsapp.repository.ClientRepository;
+import com.daddyrusher.bankdepositsapp.repository.BaseCrudRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class ClientService implements ClientRepository {
+public class ClientService {
+    private BaseCrudRepository<Client> repository;
 
-    @PersistenceContext
-    private EntityManager manager;
-
-    @Override
-    @Transactional
-    public Client insert(Client client) {
-        if (client.getId() == null) {
-            manager.persist(client);
-        }
-        return client;
+    @Autowired
+    public ClientService(@Qualifier("clientRepository") BaseCrudRepository<Client> repository) {
+        this.repository = repository;
     }
 
-    @Override
-    public Client getById(Long id) {
-        return manager.find(Client.class, id);
+    public ClientService() {
     }
 
-    @Override
+    public List<Client> findAll() {
+        return repository.findAll();
+    }
+
+    public Client save(Client client) {
+        return repository.save(client);
+    }
+
+    public Optional<Client> findById(Long id) {
+        return repository.findById(id);
+    }
+
     public Client update(Client client) {
-        return null;
+        return repository.update(client);
     }
 
-    @Override
-    public Client delete(Client client) {
-        if (manager.contains(client)) {
-            manager.remove(client);
-        } else {
-            manager.merge(client);
-        }
-        return null;
+    public void delete(Client client) {
+        repository.delete(client);
     }
 
-    @Override
-    public List<Client> getAll() {
-        return null;
-    }
 }
